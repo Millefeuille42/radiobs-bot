@@ -31,6 +31,8 @@ class MatrixSettings(BaseModel):
 
 
 class RadioSettings(BaseModel):
+    name: str = Field(description="Radio name", default="")
+    stream_url: str = Field(description="Radio stream URL", default="")
     api_url: str = Field(description="Web radio API URL", default="")
     poll_interval: int = Field(
         description="Interval in seconds to poll the API", default=15

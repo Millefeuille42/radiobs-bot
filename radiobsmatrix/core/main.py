@@ -129,7 +129,7 @@ async def main() -> None:
                             logger.info("📻 Initial song: %s", song_title)
 
                         if matrix_send_messages:
-                            message = f"🎵 Now playing: **{song_title}**"
+                            message = f'🎵 Now playing: **{song_title}**'
                             send_res = await client.room_send(
                                 room_id=matrix_room_id,
                                 message_type="m.room.message",
@@ -146,18 +146,20 @@ async def main() -> None:
                                 )
 
                         if matrix_update_topic:
-                            topic = f"🎵 Now playing: {song_title}"
+                            content = {
+                                "topic": f'[{settings.radio.name}]({settings.radio.stream_url}) - 🎵 Now playing: {song_title}',
+                            }
                             topic_res = await client.room_put_state(
                                 room_id=matrix_room_id,
                                 event_type="m.room.topic",
-                                content={"topic": topic},
+                                content=content,
                             )
                             if hasattr(topic_res, "message"):
                                 logger.error(
                                     f"Failed to update room topic: {topic_res.message}"
                                 )
                             else:
-                                logger.info(f"Room topic updated to: {topic}")
+                                logger.info(f"Room topic updated to: {content['topic']}")
 
                         current_title = song_title
 
